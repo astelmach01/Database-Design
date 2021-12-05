@@ -12,8 +12,13 @@ def view_stats():
     print("Viewing stats")
     teams = execute_query(cur, "SELECT * FROM game_team")
     for team in teams:
-        print("Team Name: ", team[0].ljust(10), "Game Name: ".ljust(
-            10), team[1].ljust(10), "Manager: ".rjust(10), team[2].ljust(10), "Captain: ".ljust(10), team[3].ljust(10), "Wins: ".ljust(10), str(team[4]).ljust(10), "Losses: ".ljust(10), str(team[5]).ljust(10))
+        print("Team Name: ", team[0].ljust(20),
+              "Game Name: ".ljust(5),
+              team[1].ljust(20), "Manager: ".rjust(20),
+              team[2].ljust(20), "Captain: ".ljust(20),
+              team[3].ljust(20), "Wins: ".ljust(5),
+              str(team[4]).ljust(5), "Losses: ".ljust(5),
+              str(team[5]).ljust(5))
 
     print()
     print()
@@ -86,41 +91,186 @@ def view_matches():
     print("Win Team: ", result[0].ljust(10), "Losing Team: ".ljust(10), result[1].ljust(10), "Match Length: ".ljust(10), str(result[2]).ljust(10), "MVP: ".ljust(10), result[4])
     print()
     print()
+    
+def delete_entries(conn, cur):
+    print("1) Delete a game")
+    print("2) Delete a team")
+    print("3) Delete a match")
+    print("4) Delete a player")
+    print("5) Delete an organization")
+      
+    valid = False
+    while not valid:
+        try:
+            user_input = input(
+                "Choose which table you would like to delete from: ")
+            valid = True and int(user_input) in range(1, 6)
+        except:
+            print("Invalid input")
+    
+    if user_input == "1":
+        game_name = input("Please enter the name of the game: ")
+        check = execute_query(
+            cur, "SELECT game_name FROM game WHERE game_name = '" + game_name + "'")
+        if len(check) == 0:
+            print("GAME DOES NOT EXIST")
+        else:
+            execute_query(cur, "DELETE FROM game WHERE game_name = '" + game_name + "'")
+            print("GAME DELETED")
+            
+    elif user_input == "2":
+        team_name = input("Please enter the name of the team: ")
+        check = execute_query(cur, "SELECT team_name FROM team WHERE team_name = '" + team_name + "'")
+        if len(check) == 0:
+            print("TEAM DOES NOT EXIST")
+        else:
+            execute_query(cur, "DELETE FROM team WHERE team_name = '" + team_name + "'")
+            print("TEAM DELETED")
+            
+    elif user_input == "3":
+        match_name = input("Please enter the name of the match: ")
+        check = execute_query(cur, "SELECT match_name FROM match WHERE match_name = '" + match_name + "'")
+        if len(check) == 0:
+            print("MATCH DOES NOT EXIST")
+            
+        else:
+            execute_query(cur, "DELETE FROM match WHERE match_name = '" + match_name + "'")
+            print("MATCH DELETED")
+            
+    elif user_input == "4":
+        player_name = input("Please enter the name of the player: ")
+        check = execute_query(cur, "SELECT player_name FROM player WHERE player_name = '" + player_name + "'")
+        if len(check) == 0:
+            print("PLAYER DOES NOT EXIST")
+        else:
+            execute_query(cur, "DELETE FROM player WHERE player_name = '" + player_name + "'")
+            print("PLAYER DELETED")
+            
+    else:
+        org_name = input("Please enter the name of the organization: ")
+        check = execute_query(cur, "SELECT team_name FROM team WHERE team_name = '" + org_name + "'")
+        if len(check) == 0:
+            print("ORGANIZATION DOES NOT EXIST")
+        else:
+            execute_query(cur, "DELETE FROM team WHERE team_name = '" + org_name + "'")
+            print("ORGANIZATION DELETED")
+            
+            
+    conn.commit()
+    
+def update_entries(conn, cur):
+    print("1) Update a game")
+    print("2) Update a match")
+    print("3) Update a player")
+    print("4) Update an organization")
+    
+    valid = False
+    while not valid:
+        try:
+            user_input = input(
+                "Choose which table you would like to delete from: ")
+            valid = True and int(user_input) in range(1, 6)
+        except:
+            print("Invalid input")
+            
+    if user_input == "1":
+        print("Updating game")
+        game_name = input("Please enter the name of the game: ")
+        genre = input("Please enter the genre of the game: ")
+        developer = input("Please enter the name of the developer: ")
+        release_date = input("Please enter the date the game was released: ")
+        
+        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer + "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
+        
+    if user_input == "2":
+        print("Updating match")
+        key = input("Please enter the length of the match you would like to update: ")
+        win_team = input("Please enter the name of the winning team: ")
+        lose_team = input("Please enter the name of the losing team: ")
+        match_length = int(input("Please enter the length of the match: "))
+        game = input("Please enter the name of the game: ")
+        MVP = input("Please enter the name of the MVP: ")
+        
+        cur.execute("UPDATE league_match SET win_team = '" + win_team + "', lose_team = '" + lose_team + "', match_length = '" + str(match_length) + "', game = '" + game + "', MVP = '" + MVP + "' WHERE match_length = '" + key + "'")
+        
+        
+    if user_input == "3":
+        print("Updating player")
+        player_name = input("Please enter the name of the player you wish to update: ")
+        game_name = input("Please enter the name of the game the player is playing: ")
+        team_name = input("Please enter the name of the team the player is on: ")
+        username = input("Please enter the username of the player: ")
+        
+        cur.execute("UPDATE player SET game_name = '" + game_name + "', team_name = '" + team_name + "', username = '" + username + "' WHERE player_name = '" + player_name + "'")
+        
+    if user_input == "4":
+        print("Updating game")
+        game_name = input("Please enter the name of the game: ")
+        genre = input("Please enter the genre of the game: ")
+        developer = input("Please enter the name of the developer: ")
+        release_date = input("Please enter the date the game was released: ")
+
+        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
+                    "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
+        
+    if user_input == "5":
+        print("Updating game")
+        game_name = input("Please enter the name of the game: ")
+        genre = input("Please enter the genre of the game: ")
+        developer = input("Please enter the name of the developer: ")
+        release_date = input("Please enter the date the game was released: ")
+
+        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
+                    "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
+        
+        
+    conn.commit()
+            
+    
+        
+    
 
 while True:
     print("1) view stats")
-    print("2) create game")
-    print("3) create team")
-    print("4) simulate matches")
-    print("5) create organization")
-    print("6) view matches")
-
-    print("7) exit")
+    print("2) view matches")
+    print("3) simulate matches")
+    print("4) create game")
+    print("5) create team")
+    print("6) create organization")
+    print("7) delete entries")
+    print("8) update entries")
+    print("8) exit")
 
     user_input = input(
         "Greetings, this is the main menu. Please select an option (enter a number):")
     
-    if int(user_input) in range(1, 5):
-        valid_input = True
+    try: 
+        if int(user_input) == 1:
+            view_stats()
+            
+        if int(user_input) == 2:
+            view_matches()
+            
+        if int(user_input) == 3:
+            simulate_matches()
+            
+        if int(user_input) == 4:
+            create_game()
         
-    if int(user_input) == 1:
-        view_stats()
-        
-    if int(user_input) == 2:
-        create_game()
-        
-    if int(user_input) == 3:
-        create_team()
-        
-    if int(user_input) == 4:
-        simulate_matches()
-    
-    if int(user_input) == 5:
-        create_org()
-        
-    if int(user_input) == 6:
-        view_matches()
-        
-    if int(user_input) == 7:
-        conn.close()
-        exit()
+        if int(user_input) == 5:
+            create_team()
+            
+        if int(user_input) == 6:
+            create_org()
+            
+        if int(user_input) == 7:
+            delete_entries(conn, cur)
+            
+        if int(user_input) == 8:
+            update_entries(conn, cur)
+            
+        if int(user_input) == 9:
+            conn.close()
+            exit()
+    except:
+        continue
