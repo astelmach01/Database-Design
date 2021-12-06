@@ -59,6 +59,13 @@ def create_team():
     
 def simulate_matches():
     teams = execute_query(cur, "SELECT * FROM team")
+    if len(teams) < 2:
+        print("Not enough teams to simulate matches")
+        return
+
+    if len(teams) % 2 != 0:
+        teams = teams[:-1]
+        
     for teams in batch(list(teams), 2):
         first_team = teams[0]
         second_team = teams[1]
