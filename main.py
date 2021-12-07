@@ -8,6 +8,9 @@ conn = pymysql.connect(host='localhost', user='root', password='Mamaitato345', d
 
 cur = conn.cursor()
 
+def clear():
+    for _ in range(10):
+        print()
 
 def check(query):
     return execute_query(cur, query)
@@ -256,27 +259,34 @@ while True:
     
     try: 
         if int(user_input) == 1:
+            clear()
             view_stats()
             
         if int(user_input) == 2:
+            clear()
             view_matches()
             
         if int(user_input) == 3:
+            clear()
             simulate_matches()
             
         if int(user_input) == 4:
+            clear()
             create_game()
         
         if int(user_input) == 5:
             create_team()
             
         if int(user_input) == 6:
+            clear()
             create_org()
             
         if int(user_input) == 7:
+            clear()
             delete_entries(conn, cur)
             
         if int(user_input) == 8:
+            clear()
             update_entries(conn, cur)
             
         if int(user_input) == 9:
