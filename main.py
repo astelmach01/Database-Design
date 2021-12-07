@@ -224,6 +224,8 @@ def update_entries(conn, cur):
         cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
                     "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
         
+        # cur.callproc("update_game", [game_name, genre, developer, release_date])
+        
     if user_input == "5":
         print("Updating game")
         game_name = input("Please enter the name of the game: ")
@@ -237,9 +239,6 @@ def update_entries(conn, cur):
         
     conn.commit()
             
-    
-        
-    
 
 while True:
     print("1) view stats")
@@ -283,5 +282,5 @@ while True:
         if int(user_input) == 9:
             conn.close()
             exit()
-    except:
+    except ValueError:
         continue
