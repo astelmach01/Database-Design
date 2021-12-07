@@ -246,7 +246,7 @@ while True:
     print("6) create organization")
     print("7) delete entries")
     print("8) update entries")
-    print("8) exit")
+    print("9) exit")
 
     user_input = input(
         "Greetings, this is the main menu. Please select an option (enter a number):")
