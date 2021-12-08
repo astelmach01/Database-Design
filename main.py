@@ -60,7 +60,7 @@ def create_team():
     loss_amount = input("Please enter the amount of losses: ")
     
     if check("SELECT team_name FROM team WHERE team_name = '" + org + "'"):
-        cur.callproc("create_team", [org, name_of_game, manager_name, captain_name, win_amount, loss_amount])
+        cur.callproc("insert_game_team", [org, name_of_game, manager_name, captain_name, win_amount, loss_amount])
         conn.commit()
         print("TEAM CREATED")
     else:
@@ -198,7 +198,10 @@ def update_entries(conn, cur):
         developer = input("Please enter the name of the developer: ")
         release_date = input("Please enter the date the game was released: ")
         
-        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer + "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
+        if not check("SELECT game_name FROM game WHERE game_name = '" + game_name + "'"):
+            print("GAME DOES NOT EXIST")
+        else:
+            cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer + "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
         
     if user_input == "2":
         print("Updating match")
@@ -209,7 +212,10 @@ def update_entries(conn, cur):
         game = input("Please enter the name of the game: ")
         MVP = input("Please enter the name of the MVP: ")
         
-        cur.execute("UPDATE league_match SET win_team = '" + win_team + "', lose_team = '" + lose_team + "', match_length = '" + str(match_length) + "', game = '" + game + "', MVP = '" + MVP + "' WHERE match_length = '" + key + "'")
+        if not check("SELECT match_name FROM match WHERE match_name = '" + key + "'"):
+            print("MATCH DOES NOT EXIST")
+        else:
+            cur.execute("UPDATE league_match SET win_team = '" + win_team + "', lose_team = '" + lose_team + "', match_length = '" + str(match_length) + "', game = '" + game + "', MVP = '" + MVP + "' WHERE match_length = '" + key + "'")
         
         
     if user_input == "3":
@@ -219,7 +225,10 @@ def update_entries(conn, cur):
         team_name = input("Please enter the name of the team the player is on: ")
         username = input("Please enter the username of the player: ")
         
-        cur.execute("UPDATE player SET game_name = '" + game_name + "', team_name = '" + team_name + "', username = '" + username + "' WHERE player_name = '" + player_name + "'")
+        if not check("SELECT player_name FROM player WHERE player_name = '" + player_name + "'"):
+            print("PLAYER DOES NOT EXIST")
+        else:
+            cur.execute("UPDATE player SET game_name = '" + game_name + "', team_name = '" + team_name + "', username = '" + username + "' WHERE player_name = '" + player_name + "'")
         
     if user_input == "4":
         print("Updating game")
@@ -228,7 +237,10 @@ def update_entries(conn, cur):
         developer = input("Please enter the name of the developer: ")
         release_date = input("Please enter the date the game was released: ")
 
-        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
+        if not check("SELECT game_name FROM game WHERE game_name = '" + game_name + "'"):
+            print("GAME DOES NOT EXIST")
+        else:
+            cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
                     "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
         
         # cur.callproc("update_game", [game_name, genre, developer, release_date])
@@ -240,7 +252,10 @@ def update_entries(conn, cur):
         developer = input("Please enter the name of the developer: ")
         release_date = input("Please enter the date the game was released: ")
 
-        cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
+        if not check("SELECT game_name FROM game WHERE game_name = '" + game_name + "'"):
+            print("GAME DOES NOT EXIST")
+        else:
+            cur.execute("UPDATE game SET genre = '" + genre + "', developer = '" + developer +
                     "', release_date = '" + release_date + "' WHERE game_name = '" + game_name + "'")
         
         
