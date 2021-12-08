@@ -344,6 +344,7 @@ def run():
             if int(user_input) == 2:
                 clear()
                 simulate_matches()
+                view_matches()
 
             if int(user_input) == 4:
                 clear()
