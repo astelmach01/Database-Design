@@ -13,7 +13,7 @@ def clear():
         print()
 
 def check(query):
-    return execute_query(cur, query)
+    return not len(execute_query(cur, query))
     
 
 def view_stats():
@@ -38,14 +38,17 @@ def create_org():
     team_name = input("Please enter the name of the team: ")
     owner_name = input("Please enter the name of the owner: ")
     
+    print(check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"))
     if check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"):
         cur.callproc("insert_org", [team_name, owner_name])
+        conn.commit()
         print("TEAM CREATED")
     else:
         print("TEAM ALREADY EXISTS.")
     
     print()
     print()
+
     
     
 def create_team():
@@ -58,6 +61,7 @@ def create_team():
     
     if check("SELECT team_name FROM team WHERE team_name = '" + org + "'"):
         cur.callproc("create_team", [org, name_of_game, manager_name, captain_name, win_amount, loss_amount])
+        conn.commit()
         print("TEAM CREATED")
     else:
         print("TEAM ALREADY EXISTS.")
@@ -130,7 +134,7 @@ def delete_entries(conn, cur):
     if user_input == "1":
         game_name = input("Please enter the name of the game: ")
         
-        if not check("SELECT game_name FROM game WHERE game_name = '" + game_name + "'"):
+        if check("SELECT game_name FROM game WHERE game_name = '" + game_name + "'"):
             print("GAME DOES NOT EXIST")
         else:
             execute_query(cur, "DELETE FROM game WHERE game_name = '" + game_name + "'")
@@ -138,7 +142,7 @@ def delete_entries(conn, cur):
             
     elif user_input == "2":
         team_name = input("Please enter the name of the team: ")
-        if not check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"):
+        if check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"):
             print("TEAM DOES NOT EXIST")
         else:
             execute_query(cur, "DELETE FROM team WHERE team_name = '" + team_name + "'")
@@ -146,7 +150,7 @@ def delete_entries(conn, cur):
             
     elif user_input == "3":
         match_name = input("Please enter the name of the match: ")
-        if not check("SELECT match_name FROM match WHERE match_name = '" + match_name + "'"):
+        if check("SELECT match_name FROM match WHERE match_name = '" + match_name + "'"):
             print("MATCH DOES NOT EXIST")
             
         else:
@@ -155,7 +159,7 @@ def delete_entries(conn, cur):
             
     elif user_input == "4":
         player_name = input("Please enter the name of the player: ")
-        if not check("SELECT player_name FROM player WHERE player_name = '" + player_name + "'"):
+        if check("SELECT player_name FROM player WHERE player_name = '" + player_name + "'"):
             print("PLAYER DOES NOT EXIST")
         else:
             execute_query(cur, "DELETE FROM player WHERE player_name = '" + player_name + "'")
@@ -163,7 +167,7 @@ def delete_entries(conn, cur):
             
     else:
         org_name = input("Please enter the name of the organization: ")
-        if not check("SELECT team_name FROM team WHERE team_name = '" + org_name + "'"):
+        if check("SELECT team_name FROM team WHERE team_name = '" + org_name + "'"):
             print("ORGANIZATION DOES NOT EXIST")
         else:
             execute_query(cur, "DELETE FROM team WHERE team_name = '" + org_name + "'")
