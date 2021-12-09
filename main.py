@@ -332,39 +332,44 @@ def run(given=None):
         user_input = input(
             "Greetings, this is the main menu. Please select an option (enter a number):")
 
+        try:
+            if int(user_input) == 1:
+                    clear()
+                    view_info_about_league()
 
-        if int(user_input) == 1:
-                clear()
-                view_info_about_league()
+            if int(user_input) == 2:
+                    clear()
+                    simulate_matches()
+                    view_matches()
 
-        if int(user_input) == 2:
-                clear()
-                simulate_matches()
-                view_matches()
+            if int(user_input) == 3:
+                    clear()
+                    create_game()
 
-        if int(user_input) == 3:
-                clear()
-                create_game()
+            if int(user_input) == 4:
+                    clear()
+                    create_team()
 
-        if int(user_input) == 4:
-                clear()
-                create_team()
+            if int(user_input) == 5:
+                    clear()
+                    create_org()
 
-        if int(user_input) == 5:
-                clear()
-                create_org()
+            if int(user_input) == 6:
+                    clear()
+                    delete_entries(conn, cur)
 
-        if int(user_input) == 6:
-                clear()
-                delete_entries(conn, cur)
+            if int(user_input) == 7:
+                    clear()
+                    update_entries(conn, cur)
 
-        if int(user_input) == 7:
-                clear()
-                update_entries(conn, cur)
-
-        if int(user_input) == 8:
-                conn.close()
-                exit()
+            if int(user_input) == 8:
+                    conn.close()
+                    exit()
+                    
+        except:
+            clear()
+            print("Invalid input, please try again")
+            continue
 
 
 
