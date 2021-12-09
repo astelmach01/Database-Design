@@ -40,7 +40,6 @@ def create_org():
     team_name = input("Please enter the name of the team: ")
     owner_name = input("Please enter the name of the owner: ")
 
-    print(check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"))
     if check("SELECT team_name FROM team WHERE team_name = '" + team_name + "'"):
         cur.callproc("insert_org", [team_name, owner_name])
         conn.commit()
@@ -60,7 +59,7 @@ def create_team():
     win_amount = input("Please enter the amount of wins: ")
     loss_amount = input("Please enter the amount of losses: ")
 
-    if check("SELECT team_name FROM team WHERE team_name = '" + org + "'"):
+    if not check("SELECT team_name, game_name FROM game_team WHERE team_name='" + org + "' AND game_name='" + name_of_game + "'"):
         cur.callproc("insert_game_team", [org, name_of_game, manager_name, captain_name, win_amount, loss_amount])
         conn.commit()
         print("TEAM CREATED")
