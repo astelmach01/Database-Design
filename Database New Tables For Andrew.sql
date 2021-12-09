@@ -58,7 +58,7 @@ INSERT INTO team (team_name, owner_name) VALUES
 
 
 CREATE TABLE game_team(
-team_name VARCHAR(40) NOT NULL UNIQUE,
+team_name VARCHAR(40) NOT NULL,
 game_name VARCHAR(40) NOT NULL,
 manager VARCHAR(40) NOT NULL,
 captain VARCHAR(40) PRIMARY KEY NOT NULL UNIQUE,
