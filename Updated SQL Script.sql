@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS ESleague;
-CREATE DATABASE ESleague;
+DROP DATABASE IF EXISTS esleague;
+CREATE DATABASE esleague;
 
-USE ESleague;
+USE esleague;
 CREATE TABLE league_user(
 username VARCHAR(20) PRIMARY KEY UNIQUE NOT NULL,
 user_password VARCHAR(20) UNIQUE NOT NULL
@@ -101,11 +101,13 @@ INSERT INTO player (player_name, game, team_name, username) VALUES
 
 
 CREATE TABLE league_match(
+match_id INT AUTO_INCREMENT,
 win_team VARCHAR(40) NOT NULL,
 lose_team VARCHAR(40) NOT NULL,
 match_length INT,
 game VARCHAR(40) NOT NULL,
 MVP VARCHAR(40) NOT NULL,
+PRIMARY KEY (match_id),
 FOREIGN KEY (game) REFERENCES game(game_name),
 FOREIGN KEY (win_team) REFERENCES team(team_name) ON DELETE CASCADE,
 FOREIGN KEY (lose_team) REFERENCES team(team_name) ON DELETE CASCADE
