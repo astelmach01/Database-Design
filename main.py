@@ -4,10 +4,8 @@ from util import *
 from League_Team import *
 import time
 
-conn = pymysql.connect(host='localhost', user='root', password='Mamaitato345', db='esleague')
-
-cur = conn.cursor()
-
+conn = None
+cur = None
 
 def clear():
     for _ in range(10):
@@ -308,7 +306,18 @@ def view_info_about_league():
     print()
 
 
-def run():
+def run(given=None):
+    global conn, cur
+    
+    if given is None:
+        conn = pymysql.connect(host='localhost', user='root',
+                               password='Mamaitato345', db='esleague')
+    else:
+        conn = given
+        
+    cur = conn.cursor()
+    
+    
     while True:
 
         print("1) View info about the League")
@@ -323,41 +332,40 @@ def run():
         user_input = input(
             "Greetings, this is the main menu. Please select an option (enter a number):")
 
-        try:
-            if int(user_input) == 1:
+
+        if int(user_input) == 1:
                 clear()
                 view_info_about_league()
 
-            if int(user_input) == 2:
+        if int(user_input) == 2:
                 clear()
                 simulate_matches()
                 view_matches()
 
-            if int(user_input) == 3:
+        if int(user_input) == 3:
                 clear()
                 create_game()
 
-            if int(user_input) == 4:
+        if int(user_input) == 4:
                 clear()
                 create_team()
 
-            if int(user_input) == 5:
+        if int(user_input) == 5:
                 clear()
                 create_org()
 
-            if int(user_input) == 6:
+        if int(user_input) == 6:
                 clear()
                 delete_entries(conn, cur)
 
-            if int(user_input) == 7:
+        if int(user_input) == 7:
                 clear()
                 update_entries(conn, cur)
 
-            if int(user_input) == 8:
+        if int(user_input) == 8:
                 conn.close()
                 exit()
-        except:
-            continue
+
 
 
 if __name__ == "__main__":
